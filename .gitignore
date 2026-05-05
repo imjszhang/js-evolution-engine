@@ -1,0 +1,14 @@
+node_modules/
+*.log
+.DS_Store
+.env
+.env.local
+coverage/
+dist/
+.vitest-cache/
+
+# OADA runtime data (when running locally)
+data/
+work_dir/
+examples/*/data/
+examples/*/work_dir/

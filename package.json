@@ -1,0 +1,49 @@
+{
+  "name": "js-evolution-engine",
+  "version": "0.1.0",
+  "description": "OADA (Observe-Analyze-Decide-Act) autonomous evolution engine for AI agents. Three-pipeline framework with Issue-driven decisions, PR-based execution, and risk-aware verification.",
+  "type": "module",
+  "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./engine": "./src/engine.mjs",
+    "./pipelines/intel": "./src/pipelines/intel.mjs",
+    "./pipelines/exec": "./src/pipelines/exec.mjs",
+    "./pipelines/verify": "./src/pipelines/verify.mjs",
+    "./host": "./src/core/host.mjs"
+  },
+  "bin": {
+    "oada": "src/cli/oada.mjs"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "node examples/minimal-demo/run.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "proper-lockfile": "^4.1.2"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "oada",
+    "autonomous-agent",
+    "ai-agent",
+    "self-evolution",
+    "observe-analyze-decide-act",
+    "issue-driven",
+    "framework"
+  ],
+  "license": "MIT"
+}
