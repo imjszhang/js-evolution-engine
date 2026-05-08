@@ -50,11 +50,12 @@ The `oada` CLI loads a `HostContext` factory from `oada.config.mjs`:
 // oada.config.mjs
 export default async function ({ cwd }) {
   return {
-    aiClient,        // required
-    host,            // required (or omitted = NULL_HOST)
-    actionRegistry,  // optional
-    promptBuilder,   // optional
-    githubIssues,    // optional
+    aiClient,           // required
+    host,               // required (or omitted = NULL_HOST)
+    actionRegistry,     // optional
+    promptBuilder,      // optional
+    agentContextDocs,   // optional — see "Injecting Agent Context Documents" below
+    githubIssues,       // optional
   };
 }
 ```
@@ -141,3 +142,55 @@ Action types control:
 - The list shown to the AI in the analyze-decide prompt (`{{ACTION_REGISTRY}}`).
 - The default risk level used by the verify pipeline's policy mapping.
 - Whether the action is candidate for auto-execution vs. routed to a human reviewer.
+
+`ActionTypeSpec` also accepts an optional free-form `layer` field. The engine does not interpret the value — it is rendered next to the prompt hint and passed through to handlers, so hosts can encode domain-specific classifications (for example tiered structures like `core` / `buffer` / `probe`) without engine-level coupling.
+
+```javascript
+ACTION_REGISTRY.register(new ActionTypeSpec({
+  name: 'probe_new_format',
+  description: 'Run a small experiment with a new content format',
+  promptHint: 'Run a probe (params: hypothesis, success_signal, failure_signal, death_boundary)',
+  defaultRisk: 'low',
+  layer: 'probe',
+}));
+```
+
+## Injecting Agent Context Documents
+
+Hosts can inject arbitrary markdown documents (constitutions, protocols, in-house playbooks) that should be visible to the AI as authoritative context for every analyze/decide call. The engine treats these documents as opaque text — it does not parse, summarize, or version them. Versioning is the responsibility of whoever owns the source document.
+
+Pass an `agentContextDocs` array from the `oada.config.mjs` factory:
+
+```javascript
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export default async function ({ cwd }) {
+  const docsDir = process.env.MY_DOCS_DIR || resolve(__dirname, './docs');
+  const agentContextDocs = [
+    {
+      id: 'my-protocol:constitution',
+      source: 'CONSTITUTION.md',
+      text: readFileSync(resolve(docsDir, 'CONSTITUTION.md'), 'utf-8'),
+    },
+    {
+      id: 'my-protocol:skill',
+      source: 'SKILL.md',
+      text: readFileSync(resolve(docsDir, 'SKILL.md'), 'utf-8'),
+    },
+  ];
+
+  return {
+    aiClient,
+    host,
+    agentContextDocs,
+  };
+}
+```
+
+Each entry has the shape `{ id: string, source?: string, text: string }`. The text is concatenated verbatim at the very top of the analyze, decide, and analyze-decide prompts, prefaced with the document `id` and optional `source` label so the AI can cite which document it is following.
+
+Combined with custom `actionRegistry` entries (with optional `layer`) and host-side `actionHandlers`, this is the recommended way to layer domain-specific protocols on top of the generic engine without forking the engine itself.

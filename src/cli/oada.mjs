@@ -11,7 +11,7 @@
  * The CLI loads a host adapter from `oada.config.mjs` in the current
  * working directory (or via `--config <path>`). The config file must
  * default-export an async factory that returns:
- *   { host, aiClient, [actionRegistry], [promptBuilder], [githubIssues] }
+ *   { host, aiClient, [actionRegistry], [promptBuilder], [agentContextDocs], [githubIssues] }
  *
  * If no config exists, a NULL_HOST + a Mock AI client is used (useful
  * for dry-run smoke tests but cannot do real work).
@@ -84,6 +84,7 @@ async function cmdIntel(args) {
     goalId: args.goal || null,
     mode: args.github ? 'github' : 'local',
     githubIssues: cfg.githubIssues,
+    agentContextDocs: cfg.agentContextDocs,
   });
   const result = await pipeline.run({ dryRun: !!args['dry-run'] });
   console.log(JSON.stringify(result, null, 2));

@@ -1,3 +1,4 @@
+{{AGENT_CONTEXT_DOCS}}
 # Strategic Analysis Task
 
 ## Background

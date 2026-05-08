@@ -74,6 +74,8 @@ npx oada verify --auto      # (github mode) audit PRs + auto-merge low-risk
 
 See [`examples/minimal-demo`](examples/minimal-demo) for a runnable example with no external dependencies.
 
+For an example of layering an external protocol (constitution / skill markdown) on top of the engine via `agentContextDocs`, see [`examples/cyber-taoist-demo`](examples/cyber-taoist-demo) and the [`Injecting Agent Context Documents`](docs/HOST_ADAPTER.md#injecting-agent-context-documents) section of the host-adapter guide.
+
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md) — pipelines, dataflow, file layout

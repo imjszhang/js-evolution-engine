@@ -43,12 +43,16 @@ export class EvolutionEngine {
    * @param {object} [opts.evolutionLogger]
    * @param {object} [opts.modifier]
    * @param {object} [opts.analyzer]
+   * @param {Array<{id: string, source?: string, text: string}>} [opts.agentContextDocs]
+   *        Authoritative context documents (e.g. external constitutions/skills) that
+   *        will be injected verbatim at the top of analyze/decide prompts.
    */
   constructor({
     aiClient, host = null, projectRoot = null, goalId = null, rulesPath = null,
     actionRegistry = null, promptBuilder = null,
     goalProvider = null, featureQueue = null, guidanceReader = null,
     evolutionLogger = null, modifier = null, analyzer = null,
+    agentContextDocs = null,
   }) {
     if (!aiClient) throw new Error('EvolutionEngine: aiClient is required');
     this.host = normalizeHost(host);
@@ -56,6 +60,7 @@ export class EvolutionEngine {
     this.aiClient = aiClient;
     this.actionRegistry = actionRegistry || ACTION_REGISTRY;
     this.promptBuilder = promptBuilder || new PromptBuilder({ actionRegistry: this.actionRegistry });
+    this.agentContextDocs = Array.isArray(agentContextDocs) ? agentContextDocs : [];
 
     this._cycleId = `cycle-${nowBeijingStr('%Y%m%d-%H%M%S')}`;
     this._goalId = goalId;
@@ -152,6 +157,7 @@ export class EvolutionEngine {
         intelligenceContext,
         pendingIssues,
         observationReport: observation.observation_report,
+        agentContextDocs: this.agentContextDocs,
       });
 
       const ai = await this.aiClient.chatJson(prompt, 'medium', 600);

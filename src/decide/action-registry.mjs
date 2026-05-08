@@ -10,7 +10,7 @@
  * `ACTION_REGISTRY.register(new ActionTypeSpec({...}))` at startup.
  */
 
-/** @typedef {{ name: string, description: string, promptHint: string, defaultRisk?: string, defaultPriority?: string, autoExecutable?: boolean, labelColor?: string, labelName?: string }} ActionTypeSpecInit */
+/** @typedef {{ name: string, description: string, promptHint: string, defaultRisk?: string, defaultPriority?: string, autoExecutable?: boolean, labelColor?: string, labelName?: string, layer?: string }} ActionTypeSpecInit */
 
 class ActionTypeSpec {
   /**
@@ -20,6 +20,7 @@ class ActionTypeSpec {
     name, description, promptHint,
     defaultRisk = 'high', defaultPriority = 'medium',
     autoExecutable = true, labelColor = 'c5def5', labelName,
+    layer = null,
   }) {
     this.name = name;
     this.description = description;
@@ -29,6 +30,10 @@ class ActionTypeSpec {
     this.autoExecutable = autoExecutable;
     this.labelColor = labelColor;
     this.labelName = labelName ?? null;
+    // Free-form metadata; the engine does not validate or interpret it.
+    // Hosts may use it to express domain-specific classifications such as
+    // "core / buffer / probe" tiers.
+    this.layer = layer || null;
   }
 
   getLabelName() {
@@ -36,7 +41,8 @@ class ActionTypeSpec {
   }
 
   toPromptLine() {
-    return `- \`${this.name}\`: ${this.promptHint}`;
+    const suffix = this.layer ? `  [layer: ${this.layer}]` : '';
+    return `- \`${this.name}\`: ${this.promptHint}${suffix}`;
   }
 
   toLabelDef() {

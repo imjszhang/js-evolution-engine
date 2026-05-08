@@ -25,15 +25,19 @@ export class IntelligencePipeline {
    * @param {object} [opts.githubIssues]     required when mode='github'; if not passed, falls back to host.githubIssues
    * @param {object} [opts.engine]           preconstructed engine (advanced)
    * @param {DecisionQueue} [opts.decisionQueue]
+   * @param {Array<{id: string, source?: string, text: string}>} [opts.agentContextDocs]
    */
   constructor({
     aiClient, host = null, projectRoot = null, goalId = null,
     mode = 'local', githubIssues = null, engine = null, decisionQueue = null,
+    agentContextDocs = null,
   }) {
     this.host = host;
     this.mode = mode;
     this.githubIssues = githubIssues || host?.githubIssues || null;
-    this.engine = engine || new EvolutionEngine({ aiClient, host, projectRoot, goalId });
+    this.engine = engine || new EvolutionEngine({
+      aiClient, host, projectRoot, goalId, agentContextDocs,
+    });
     this.projectRoot = this.engine.projectRoot;
     this.decisionQueue = decisionQueue || new DecisionQueue({
       dataDir: join(this.projectRoot, 'data', 'evolution'),

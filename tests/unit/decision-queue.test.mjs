@@ -71,6 +71,29 @@ describe('DecisionQueue', () => {
     expect(sum.by_status.pending).toBe(1);
   });
 
+  it('preserves arbitrary unknown fields on action objects (passthrough)', () => {
+    const richAction = {
+      type: 'probe_new_format',
+      description: 'try a new format',
+      layer: 'probe',
+      hypothesis: 'short threads outperform long',
+      success_signal: 'engagement +20%',
+      failure_signal: 'engagement flat after 24h',
+      death_boundary: 'one low-traffic slot',
+      params: { foo: 'bar' },
+    };
+    queue.addDecisions({ cycleId: 'c', actions: [richAction] });
+    const all = queue.getAll();
+    expect(all).toHaveLength(1);
+    expect(all[0].action).toEqual(richAction);
+
+    const claimed = queue.claimNext(1);
+    expect(claimed).toHaveLength(1);
+    expect(claimed[0].action.layer).toBe('probe');
+    expect(claimed[0].action.hypothesis).toBe('short threads outperform long');
+    expect(claimed[0].action.death_boundary).toBe('one low-traffic slot');
+  });
+
   it('cleanupExpired marks old pending as expired', () => {
     queue.addDecisions({ cycleId: 'c', actions: [{ type: 'a' }] });
     const file = join(tmp, 'pending_decisions.json');

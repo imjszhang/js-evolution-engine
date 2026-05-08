@@ -66,7 +66,7 @@ export class PromptBuilder {
   buildAnalysisDecisionPrompt(rawData, {
     constraints = null, humanGuidance = null, pendingIssues = null,
     goalsContext = null, intelligenceContext = null, observationReport = null,
-    rules = null,
+    rules = null, agentContextDocs = null,
   } = {}) {
     const constraintsText = constraints && Object.keys(constraints).length
       ? JSON.stringify(constraints, null, 2) : 'No specific constraints';
@@ -125,6 +125,7 @@ ${JSON.stringify(rawData.feature_requests || [], null, 2)}
     }
 
     return render(this._template('analyze-decide'), {
+      AGENT_CONTEXT_DOCS: this._renderAgentContextDocs(agentContextDocs),
       GOALS_SECTION: goalsSection,
       RULES_SECTION: rulesSection,
       DATA_SECTION: dataSection,
@@ -141,7 +142,10 @@ ${JSON.stringify(rawData.feature_requests || [], null, 2)}
    * @param {object} [opts]
    * @returns {string}
    */
-  buildAnalysisPrompt(rawData, { context = null, intelligenceContext = null, goalsContext = null } = {}) {
+  buildAnalysisPrompt(rawData, {
+    context = null, intelligenceContext = null, goalsContext = null,
+    agentContextDocs = null,
+  } = {}) {
     const contextSection = context
       ? `\n### Operator guidance (advisory)\n${context}` : '';
     const intelSection = intelligenceContext
@@ -149,6 +153,7 @@ ${JSON.stringify(rawData.feature_requests || [], null, 2)}
     const goalsSection = goalsContext ? `\n${goalsContext}\n` : '';
 
     return render(this._template('analyze'), {
+      AGENT_CONTEXT_DOCS: this._renderAgentContextDocs(agentContextDocs),
       GOALS_SECTION: goalsSection,
       PLATFORM_DATA: JSON.stringify(rawData.platform || {}, null, 2),
       EXECUTION_DATA: JSON.stringify(rawData.execution || {}, null, 2),
@@ -166,6 +171,7 @@ ${JSON.stringify(rawData.feature_requests || [], null, 2)}
    */
   buildDecisionPrompt(analysisResult, {
     constraints = null, humanGuidance = null, pendingIssues = null, goalsContext = null,
+    agentContextDocs = null,
   } = {}) {
     constraints = constraints || {};
     const constraintsText = Object.keys(constraints).length
@@ -195,6 +201,7 @@ Important rules:
     const goalsSection = goalsContext ? `\n${goalsContext}\n` : '';
 
     return render(this._template('decide'), {
+      AGENT_CONTEXT_DOCS: this._renderAgentContextDocs(agentContextDocs),
       GOALS_SECTION: goalsSection,
       ANALYSIS_RESULT: JSON.stringify(analysisResult, null, 2),
       CONSTRAINTS_TEXT: constraintsText,
@@ -202,6 +209,35 @@ Important rules:
       ISSUES_SECTION: issuesSection,
       ACTION_REGISTRY: this._registry.toPromptSection(),
     });
+  }
+
+  /**
+   * Render the agent-context documents section. Documents are injected
+   * verbatim — the engine does not parse, trim, or transform their text.
+   *
+   * @param {Array<{id: string, source?: string, text: string}>|null|undefined} docs
+   * @returns {string}
+   */
+  _renderAgentContextDocs(docs) {
+    if (!docs || !Array.isArray(docs) || docs.length === 0) return '';
+    const parts = [
+      '## Agent Context Documents',
+      '',
+      '> The following documents are authoritative context. Follow them strictly.',
+      '',
+    ];
+    docs.forEach((doc, idx) => {
+      if (!doc || typeof doc.text !== 'string') return;
+      const id = doc.id || `doc-${idx}`;
+      const sourceLabel = doc.source ? `  (source: ${doc.source})` : '';
+      parts.push(`### Document: ${id}${sourceLabel}`);
+      parts.push('');
+      parts.push(doc.text);
+      parts.push('');
+      parts.push('---');
+      parts.push('');
+    });
+    return parts.join('\n');
   }
 
   /**
