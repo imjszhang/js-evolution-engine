@@ -32,6 +32,9 @@
     "examples/cyber-taoist-demo/run.mjs",
     "examples/cyber-taoist-demo/README.md",
     "examples/cyber-taoist-demo/human-guidance.md",
+    "examples/cyber-taoist-demo/cyber-taoist-docs/README.md",
+    "examples/cyber-taoist-demo/cyber-taoist-docs/CONSTITUTION.md",
+    "examples/cyber-taoist-demo/cyber-taoist-docs/SKILL.md",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"

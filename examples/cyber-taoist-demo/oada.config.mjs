@@ -3,8 +3,9 @@
  * external protocol on top of js-evolution-engine without forking the engine.
  *
  * Wires:
- *   - agentContextDocs from the cyber-taoist repo (CONSTITUTION.md, SKILL.md)
- *     read verbatim — this example never modifies them.
+ *   - agentContextDocs from `cyber-taoist-demo/cyber-taoist-docs/` (vendored
+ *     snapshots of CONSTITUTION.md + SKILL.md), read-only at runtime.
+ *     Override with CYBER_TAOIST_DOCS_DIR to point at a live upstream checkout.
  *   - human-guidance.md (in this directory) for the *project-local* clauses
  *     that should NOT live in the universal constitution.
  *   - a small ActionTypeRegistry that demonstrates the optional `layer` field.
@@ -27,13 +28,13 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-/** Resolve the cyber-taoist docs directory. */
+/** Resolve the directory containing CONSTITUTION.md + SKILL.md. */
 function resolveDocsDir() {
   if (process.env.CYBER_TAOIST_DOCS_DIR) {
     return resolve(process.env.CYBER_TAOIST_DOCS_DIR);
   }
-  // Default assumes a sibling checkout: <parent>/cyber-taoist/docs
-  return resolve(__dirname, '../../../cyber-taoist/docs');
+  // Bundled snapshots under this demo (see cyber-taoist-docs/README.md)
+  return resolve(__dirname, 'cyber-taoist-docs');
 }
 
 function readDoc(docsDir, filename) {
@@ -41,8 +42,8 @@ function readDoc(docsDir, filename) {
   if (!existsSync(full)) {
     throw new Error(
       `cyber-taoist doc not found: ${full}\n` +
-      `Either clone https://github.com/<org>/cyber-taoist alongside this repo, ` +
-      `or set CYBER_TAOIST_DOCS_DIR=/path/to/cyber-taoist/docs`,
+      `Expected CONSTITUTION.md and SKILL.md under ${docsDir}.\n` +
+      `Restore files in cyber-taoist-docs/ or set CYBER_TAOIST_DOCS_DIR=/path/to/docs`,
     );
   }
   return readFileSync(full, 'utf-8');

@@ -1,16 +1,14 @@
 # cyber-taoist-demo
 
-A reference host configuration showing how to layer an external protocol
-(here: the [cyber-taoist](https://github.com/) `CONSTITUTION.md` + `SKILL.md`)
-on top of `js-evolution-engine` using `agentContextDocs` — without forking
-the engine and without copying the upstream documents.
+A reference host configuration showing how to layer a protocol documented in
+markdown (`CONSTITUTION.md` + `SKILL.md`) on top of `js-evolution-engine` using
+`agentContextDocs` — without forking the engine.
 
 This demo intentionally stays narrow:
 
-- **Reads** the two cyber-taoist documents from a sibling checkout (or
-  `CYBER_TAOIST_DOCS_DIR`); never modifies them.
-- **Injects** them verbatim into the analyze/decide prompt via
-  `agentContextDocs`.
+- **Bundles** verbatim copies under [`cyber-taoist-demo/cyber-taoist-docs/`](cyber-taoist-docs/) so you can browse and run locally with **no sibling repo**. See [`cyber-taoist-docs/README.md`](cyber-taoist-docs/README.md).
+- Optionally **overrides** the docs directory with **`CYBER_TAOIST_DOCS_DIR`** (e.g. point at a live cyber-taoist checkout); never modifies the files being read.
+- **Injects** them verbatim into the analyze/decide prompt via `agentContextDocs`.
 - **Registers** three demo action types (`maintain_core_channel`,
   `pause_low_priority`, `probe_new_format`) using the optional `layer`
   metadata field (`core` / `buffer` / `probe`). The engine treats `layer`
@@ -32,28 +30,19 @@ and not to a generic example:
 
 ## Prerequisites
 
-The cyber-taoist documents must be reachable. Two options:
+**Default:** none — `CONSTITUTION.md` and `SKILL.md` are in
+`examples/cyber-taoist-demo/cyber-taoist-docs/`.
 
-1. **Sibling checkout (default):** clone the cyber-taoist repository next to
-   `js-evolution-engine`:
-   ```
-   <parent-dir>/
-     js-evolution-engine/
-     cyber-taoist/
-       docs/
-         CONSTITUTION.md
-         SKILL.md
-   ```
-2. **Custom location:** set `CYBER_TAOIST_DOCS_DIR` to an absolute path
-   pointing at the directory that contains those two files.
+**Optional:** set **`CYBER_TAOIST_DOCS_DIR`** to an absolute path containing
+those two files (e.g. your own clone’s `docs/`).
 
 ## Run
 
 ```bash
-# from the repo root, with cyber-taoist available as described above:
+# from the repo root (uses bundled cyber-taoist-docs)
 node examples/cyber-taoist-demo/run.mjs
 
-# or with an explicit path:
+# or point at another docs directory:
 CYBER_TAOIST_DOCS_DIR=/abs/path/to/cyber-taoist/docs \
   node examples/cyber-taoist-demo/run.mjs
 ```
@@ -69,10 +58,13 @@ Expected output highlights:
 ## Files
 
 | File | Purpose |
-|---|---|
+|------|---------|
+| `cyber-taoist-docs/CONSTITUTION.md` | Bundled constitution (upstream snapshot). |
+| `cyber-taoist-docs/SKILL.md` | Bundled application guide (upstream snapshot). |
+| `cyber-taoist-docs/README.md` | Notes on vendoring vs upstream. |
 | `oada.config.mjs` | Wires aiClient, agentContextDocs, action registry, handlers. |
 | `run.mjs` | Drives one intel + exec cycle and prints visibility info. |
-| `human-guidance.md` | Project-local clauses that should NOT be added to the universal cyber-taoist documents. Maintained by the host operator. |
+| `human-guidance.md` | Project-local clauses; not merged into constitution/skill. |
 
 ## Field passthrough check
 

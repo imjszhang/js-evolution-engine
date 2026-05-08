@@ -74,7 +74,7 @@ npx oada verify --auto      # (github mode) audit PRs + auto-merge low-risk
 
 See [`examples/minimal-demo`](examples/minimal-demo) (from a git checkout) or `node_modules/js-evolution-engine/examples/minimal-demo` after `npm install` — only source files are published; run the demo to create `data/` locally.
 
-For an example of injecting external markdown via `agentContextDocs`, see [`examples/cyber-taoist-demo`](examples/cyber-taoist-demo) in the repo (`node_modules/js-evolution-engine/examples/cyber-taoist-demo/` after install — sources only), and [Injecting Agent Context Documents](docs/HOST_ADAPTER.md#injecting-agent-context-documents) in the host-adapter guide. On **npmjs.com**, use the repo copy: [`examples/cyber-taoist-demo` tree](https://github.com/imjszhang/js-evolution-engine/tree/main/examples/cyber-taoist-demo) and [`HOST_ADAPTER.md` on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/HOST_ADAPTER.md#injecting-agent-context-documents).
+For an example of injecting external markdown via `agentContextDocs`, see [`examples/cyber-taoist-demo`](examples/cyber-taoist-demo) in the repo (`node_modules/js-evolution-engine/examples/cyber-taoist-demo/` after install — bundled `cyber-taoist-docs/CONSTITUTION.md` + `SKILL.md` plus demo scripts), and [Injecting Agent Context Documents](docs/HOST_ADAPTER.md#injecting-agent-context-documents) in the host-adapter guide. On **npmjs.com**, use the repo copy: [`examples/cyber-taoist-demo` tree](https://github.com/imjszhang/js-evolution-engine/tree/main/examples/cyber-taoist-demo) and [`HOST_ADAPTER.md` on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/HOST_ADAPTER.md#injecting-agent-context-documents).
 
 ## Documentation
 

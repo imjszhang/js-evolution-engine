@@ -4,6 +4,12 @@ All notable changes to `js-evolution-engine` are documented here.
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and (loosely) [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- **`examples/cyber-taoist-demo`** — snapshots of upstream `CONSTITUTION.md` and `SKILL.md` are bundled under `cyber-taoist-demo/cyber-taoist-docs/` so the demo runs without a sibling checkout; `CYBER_TAOIST_DOCS_DIR` remains an override.
+
 ## [0.2.0] — 2026-05-09
 
 ### Added
