@@ -1,6 +1,4 @@
 tests/
-examples/
-docs/
 .git/
 .gitignore
 .vitest-cache/

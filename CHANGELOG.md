@@ -4,6 +4,21 @@ All notable changes to `js-evolution-engine` are documented here.
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and (loosely) [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] — 2026-05-09
+
+### Added
+
+- **`agentContextDocs`** — hosts can inject arbitrary markdown (e.g. external constitutions or skills) verbatim at the top of analyze / decide / analyze-decide prompts. Wired through `oada.config.mjs`, `IntelligencePipeline`, and `EvolutionEngine`; see [`docs/HOST_ADAPTER.md`](docs/HOST_ADAPTER.md#injecting-agent-context-documents).
+- **`PromptBuilder`** — accepts optional `agentContextDocs` on `buildAnalysisDecisionPrompt`, `buildAnalysisPrompt`, and `buildDecisionPrompt`; new `{{AGENT_CONTEXT_DOCS}}` placeholder in default prompt templates.
+- **`ActionTypeSpec.layer`** — optional free-form metadata string, rendered in the action registry prompt section as `[layer: …]` when set (engine does not interpret values).
+- **`examples/cyber-taoist-demo`** — reference host wiring `agentContextDocs` from an external docs directory (`CYBER_TAOIST_DOCS_DIR`), layered actions, and custom action field passthrough; read-only toward upstream markdown.
+- **`tests/unit/prompt-builder.test.mjs`** and extra `DecisionQueue` coverage for passthrough fields.
+
+### Changed
+
+- **npm package contents** — installs include **`docs/`** (architecture, host adapter, migration) alongside **`src/`**. Example **sources** ship as explicit paths under `examples/minimal-demo/` and `examples/cyber-taoist-demo/` (configs and `run.mjs`; cyber-taoist also includes its `README.md` and `human-guidance.md`). Local-only `examples/*/data/` artefacts are **not** published — they appear after you run a demo from the installed paths.
+- **`package.json`** — `repository`, `homepage`, and `bugs` fields for registry discoverability.
+
 ## [0.1.0] — 2026-05-05
 
 ### Added

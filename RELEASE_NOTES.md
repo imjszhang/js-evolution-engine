@@ -1,5 +1,32 @@
 # Release Notes
 
+## v0.2.0
+
+> **Publishing + host context ergonomics.** The npm tarball now bundles **`docs/`** plus **example sources** (`examples/minimal-demo` and `examples/cyber-taoist-demo` configs and runners; excluding local `data/` outputs). Hosts can inject verbatim markdown protocols via **`agentContextDocs`**; **`ActionTypeSpec`** supports an optional **`layer`** field for opaque host-side classification; **`examples/cyber-taoist-demo`** illustrates read-only constitution/skill injection. `package.json` gains **`repository`**, **`homepage`**, and **`bugs`**.
+
+### Highlights
+
+- **`agentContextDocs`** *(2026-05-09)*: optional array `{ id, source?, text }` from `oada.config.mjs` → `IntelligencePipeline` / `EvolutionEngine` → `PromptBuilder`; rendered at the top of analyze / decide templates via `{{AGENT_CONTEXT_DOCS}}`.
+- **`ActionTypeSpec.layer`** *(2026-05-09)*: optional string; echoed in `{{ACTION_REGISTRY}}` as `[layer: …]`; not validated by the engine.
+- **Published layout** *(2026-05-09)*: `npm install` ships **`docs/`** and **example sources** (`oada.config.mjs`, `run.mjs`, and cyber-taoist `README.md` / `human-guidance.md`). Runtime `examples/*/data/` dirs are recreated locally when you run a demo — they are not in the tarball.
+- **Tests** *(2026-05-09)*: `tests/unit/prompt-builder.test.mjs` (+6); `DecisionQueue` passthrough assertion for arbitrary action keys.
+- **Registry metadata** *(2026-05-09)*: `repository`, `homepage`, `bugs` on [`package.json`](package.json).
+
+### Installation
+
+```bash
+npm install js-evolution-engine@0.2.0
+```
+
+### Downloads
+
+- [npm package `js-evolution-engine`](https://www.npmjs.com/package/js-evolution-engine)
+- Source: [`imjszhang/js-evolution-engine`](https://github.com/imjszhang/js-evolution-engine)
+
+See [`CHANGELOG.md`](CHANGELOG.md) for the full list of changes.
+
+---
+
 ## v0.1.0
 
 > **Initial public library release.** OADA (**O**bserve → **A**nalyze → **D**ecide → **A**ct) autonomous evolution engine for AI agents: three independent pipelines (intelligence, execution, verification), host-agnostic `HostContext`, queue- or GitHub Issue–backed decisions, and an `oada` CLI. ESM-only, Node >= 18. Extracted from the embedded `src/evolution/autonomous/` module of `js-moltbook` into a standalone npm package.
@@ -37,7 +64,7 @@
 
 #### As a dependency
 
-1. `npm install js-evolution-engine@0.1.0`
+1. `npm install js-evolution-engine@0.2.0` — or `@latest` after publish; pin `@0.1.0` only if you need the first tarball layout (no bundled `docs/` / `examples/`).
 2. `import { EvolutionEngine, /* … */ } from 'js-evolution-engine'` — see public API in [`README.md`](README.md).
 3. Add `oada.config.mjs` at the project root and run `npx oada intel` / `exec` / `verify` as needed.
 

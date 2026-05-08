@@ -72,16 +72,16 @@ npx oada decisions          # inspect queue state
 npx oada verify --auto      # (github mode) audit PRs + auto-merge low-risk
 ```
 
-See [`examples/minimal-demo`](examples/minimal-demo) for a runnable example with no external dependencies.
+See [`examples/minimal-demo`](examples/minimal-demo) (from a git checkout) or `node_modules/js-evolution-engine/examples/minimal-demo` after `npm install` — only source files are published; run the demo to create `data/` locally.
 
-For an example of layering an external protocol (constitution / skill markdown) on top of the engine via `agentContextDocs`, see [`examples/cyber-taoist-demo`](examples/cyber-taoist-demo) and the [`Injecting Agent Context Documents`](docs/HOST_ADAPTER.md#injecting-agent-context-documents) section of the host-adapter guide.
+For an example of injecting external markdown via `agentContextDocs`, see [`examples/cyber-taoist-demo`](examples/cyber-taoist-demo) in the repo (`node_modules/js-evolution-engine/examples/cyber-taoist-demo/` after install — sources only), and [Injecting Agent Context Documents](docs/HOST_ADAPTER.md#injecting-agent-context-documents) in the host-adapter guide. On **npmjs.com**, use the repo copy: [`examples/cyber-taoist-demo` tree](https://github.com/imjszhang/js-evolution-engine/tree/main/examples/cyber-taoist-demo) and [`HOST_ADAPTER.md` on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/HOST_ADAPTER.md#injecting-agent-context-documents).
 
 ## Documentation
 
-- [Architecture](docs/ARCHITECTURE.md) — pipelines, dataflow, file layout
-- [Host adapter guide](docs/HOST_ADAPTER.md) — the `HostContext` contract
-- [Migration from js-moltbook](docs/MIGRATION_FROM_MOLTBOOK.md) — for projects switching from the original embedded module
-- [Changelog](CHANGELOG.md)
+- [Architecture](docs/ARCHITECTURE.md) — pipelines, dataflow, file layout ([view on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/ARCHITECTURE.md))
+- [Host adapter guide](docs/HOST_ADAPTER.md) — the `HostContext` contract ([view on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/HOST_ADAPTER.md))
+- [Migration from js-moltbook](docs/MIGRATION_FROM_MOLTBOOK.md) — switching from the embedded module ([view on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/docs/MIGRATION_FROM_MOLTBOOK.md))
+- [Changelog](CHANGELOG.md) ([view on GitHub](https://github.com/imjszhang/js-evolution-engine/blob/main/CHANGELOG.md))
 
 ## Public API
 
@@ -112,7 +112,7 @@ import {
 
 ## Status
 
-`v0.1.0` — extracted from the original embedded `src/evolution/autonomous/` module of a production agent. Core flows are covered by unit tests; CLI and minimal-demo run end-to-end. Some advanced features (e.g. detailed PR auto-merge policies, sub-agent dispatch via OpenClaw Gateway) are still simplified compared to the original; see `CHANGELOG.md`.
+`v0.2.0` — adds `agentContextDocs` for host-injected authoritative markdown, optional `ActionTypeSpec.layer`, and ships `docs/` + `examples/` in the npm tarball. Core flows remain covered by unit tests; CLI and demos run end-to-end. Advanced features (e.g. detailed PR auto-merge policies, sub-agent dispatch via OpenClaw Gateway) are still simplified vs. the original; see [`CHANGELOG.md`](CHANGELOG.md).
 
 ## License
 

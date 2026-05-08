@@ -1,9 +1,17 @@
 {
   "name": "js-evolution-engine",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OADA (Observe-Analyze-Decide-Act) autonomous evolution engine for AI agents. Three-pipeline framework with Issue-driven decisions, PR-based execution, and risk-aware verification.",
   "type": "module",
   "main": "src/index.mjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imjszhang/js-evolution-engine.git"
+  },
+  "homepage": "https://github.com/imjszhang/js-evolution-engine#readme",
+  "bugs": {
+    "url": "https://github.com/imjszhang/js-evolution-engine/issues"
+  },
   "exports": {
     ".": "./src/index.mjs",
     "./engine": "./src/engine.mjs",
@@ -17,6 +25,13 @@
   },
   "files": [
     "src",
+    "docs",
+    "examples/minimal-demo/oada.config.mjs",
+    "examples/minimal-demo/run.mjs",
+    "examples/cyber-taoist-demo/oada.config.mjs",
+    "examples/cyber-taoist-demo/run.mjs",
+    "examples/cyber-taoist-demo/README.md",
+    "examples/cyber-taoist-demo/human-guidance.md",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
